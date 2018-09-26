@@ -14,6 +14,8 @@ public:
     void CheckCollision(int,int);
     void CheckCollisionAABB(int,int,int,int);
     void Draw(sf::RenderWindow *);
+
+    sf::Sprite getCollisionTexture();
 private:
     sf::Shader maskShader;
     sf::Sprite texture, maskTexture;

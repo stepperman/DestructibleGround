@@ -11,12 +11,6 @@ Ground::Ground(sf::Texture *tex) {
     texture.setTexture(*tex);
     auto *image = new sf::Image();
     CopyTextureToImage(tex, false, *image);
-
-    /*for (int i = 0; i < image->getSize().x; i++) {
-        for (int j = 0; j < image->getSize().y; j++) {
-            printf("%i \n", image->getPixel(i,j).a);
-        }
-    }*/
     
     auto *newMaskTexture = new sf::Texture();
     CopyImageToTexture(*image, *newMaskTexture);
@@ -30,7 +24,7 @@ void Ground::CopyImageToTexture(sf::Image image, sf::Texture &copyTex) {
 }
 
 void Ground::LoadShader() {
-    Ground::maskShader.loadFromFile("maskShader.f.glsl", sf::Shader::Fragment);
+    Ground::maskShader.loadFromFile("assets/maskShader.f.glsl", sf::Shader::Fragment);
 }
 
 void Ground::Draw(sf::RenderWindow *window) {
@@ -84,8 +78,6 @@ void Ground::Destroy(int x, int y, int radius)
     image = tt->copyToImage();
     int ra = radius*radius;
 
-    printf("x: %i y: %i\n", x,y);
-
     for (int i = 0; i < image.getSize().x; ++i) {
         for (int j = 0; j < image.getSize().y; ++j)
         {
@@ -93,7 +85,6 @@ void Ground::Destroy(int x, int y, int radius)
             int m2 = j - y;
             int rr = m1 * m1 + m2 * m2;
             if(rr < ra) {
-                printf("yo\n");
                 image.setPixel(i,j,sf::Color(0,0,0,0));
             }
         }
@@ -103,4 +94,8 @@ void Ground::Destroy(int x, int y, int radius)
     tex->create(tt->getSize().x, tt->getSize().y);
     tex->loadFromImage(image);
     maskTexture.setTexture(*tex);
+}
+
+sf::Sprite Ground::getCollisionTexture() {
+    return maskTexture;
 }
